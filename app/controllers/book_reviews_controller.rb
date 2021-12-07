@@ -1,5 +1,6 @@
 class BookReviewsController < ApplicationController
   before_action :set_book_review, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /book_reviews or /book_reviews.json
   def index
@@ -22,7 +23,7 @@ class BookReviewsController < ApplicationController
   # POST /book_reviews or /book_reviews.json
   def create
     @book_review = BookReview.new(book_review_params)
-
+    @book_review.user_id = current_user.id
     respond_to do |format|
       if @book_review.save
         format.html { redirect_to @book_review, notice: "Book review was successfully created." }
